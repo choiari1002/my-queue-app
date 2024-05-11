@@ -1,0 +1,115 @@
+/* sass.. :( */
+.formContainer {
+  border: 1px solid #ccc;
+  padding: 50px;
+  max-width: 400px;
+  margin: 0 auto;
+
+  .logo {
+    text-align: center;
+    font-size: 45px;
+    font-family: 'fangsong';
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+
+    .input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .sendButton,
+    .signupButton,
+    .loginButton {
+      padding: 10px;
+      border: none;
+      border-radius: 9px;
+      background-color: #0099e6;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .orText {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .forgotPassword {
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #3897f0;
+    }
+
+    .signupContainer {
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    .border {
+      border-top: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .loginText,
+    .signupText {
+      text-align: center;
+    }
+
+    .description {
+      text-align: center;
+      font-weight: bold;
+      color: gray;
+      margin-bottom: 20px;
+    }
+
+    .disclaimer {
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .learnMore {
+      margin-left: 5px;
+      color: #3897f0;
+    }
+  }
+
+  .haveAccount {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    margin-top: 20px;
+
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .forgotPasswordDescription {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+
+      .createAccount,
+      .backToLogin {
+        text-align: center;
+        margin-bottom: 10px;
+
+        &:hover {
+          color: #3897f0;
+        }
+      }
+    }
+  }
+}
