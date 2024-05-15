@@ -21,8 +21,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
 }) => {
   const supabase = makeBrowserClient();
   const [restaurantData, setRestaurantData] = useState<any>({});
-  const [queueCount, setQueueCount] = useState<any>(0);
-//   const [queueCount, setQueueCount] = useState<number>(0);
+  const [queueCount, setQueueCount] = useState<number>(0);
 
   useEffect(() => {
     async function fetchRestaurantData() {
@@ -52,8 +51,6 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
       }
 
       setQueueCount(queueData[0]?.count || 0);
-    //   setQueueCount(queueData.length > 0 ? queueData[0].count : 0);
-
     }
 
     fetchRestaurantData();

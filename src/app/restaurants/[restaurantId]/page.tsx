@@ -13,9 +13,6 @@ const RestaurantPage = async ({ params: { restaurantId } }: { params: { restaura
   return (
     <Restaurant
     restaurantId={restaurantId}
-    // chatMessages={chatMessages}
-    // myUserId={user.id}
-    // userMap={userMap}
   />
   );
 };
