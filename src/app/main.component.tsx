@@ -23,7 +23,7 @@ const MainComponent = () => {
       const { data, error } = await supabase
         .from("regions")
         .select("id, name")
-        .eq("city_id", cityId); // limit 제거
+        .eq("city_id", cityId);
 
       if (error) {
         console.error("Error fetching regions:", error.message);
