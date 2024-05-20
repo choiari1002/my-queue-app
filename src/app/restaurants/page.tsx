@@ -11,6 +11,7 @@ const RestaurantsPage = () => {
   // 현재 큐 데이터 상태 추가
   const [queueData, setQueueData] = useState([]);
   // 현재 선택된 지역 상태 추가
+  // 지역 테이블 만들기
   const [selectedArea, setSelectedArea] = useState("All");
   // 레스토랑 리스트 상태 추가
   const [restaurantList, setRestaurantList] = useState([]);

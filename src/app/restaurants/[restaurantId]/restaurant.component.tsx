@@ -11,6 +11,7 @@ import {
 } from "react";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 import { Button } from "@mantine/core";
+import Link from "next/link";
 
 type RestaurantProps = {
   restaurantId: string;
@@ -63,7 +64,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
       <p>Menu: {restaurantData.menu}</p>
       <p>Status: {restaurantData.status}</p>
       <p>Queue Count: {queueCount}</p>
-      <Button>Make a queue</Button>
+      <Button component={Link} href={`${restaurantId}/queues`}>Make a queue</Button>
     </div>
   );
 };
