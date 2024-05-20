@@ -93,7 +93,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
   return (
     <Container>
       <Group mb={20}>
-        <Button variant="subtle" onClick={() => router.push(`/restaurants?city=vancouver&region=All`)} color="gray">
+        <Button variant="subtle" onClick={() => router.push(`/restaurants?city=Vancouver&region=All`)} color="gray">
           {"<"}
         </Button>
         <Text fw={700} size="xl">
