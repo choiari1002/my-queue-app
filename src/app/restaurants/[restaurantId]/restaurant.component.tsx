@@ -110,13 +110,13 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
         mb={20}
       />
 
-      <Text size="sm" color="dimmed">
+      <Text size="sm">
         {address.city}
       </Text>
       <Text fw={700} size="xl">
         {restaurant.name}
       </Text>
-      <Text size="sm" color="dimmed">
+      <Text size="sm">
         {restaurant.status} | {restaurant.operating_hours}
       </Text>
 
