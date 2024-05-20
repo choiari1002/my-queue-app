@@ -119,6 +119,11 @@ const RestaurantListComponent = () => {
     router.push(`/restaurants?city=${city}&region=${value}`);
   };
 
+  const handleRestaurantClick = (restaurantId: string) => {
+    router.push(`/restaurants/${restaurantId}`);
+  };
+
+
   return (
     <Container>
       <Group mb={20}>
@@ -137,9 +142,13 @@ const RestaurantListComponent = () => {
         allowDeselect={false}
       />
 
-      <SimpleGrid cols={1} mt={20}>
+<SimpleGrid cols={1} mt={20}>
         {restaurants.map((restaurant) => (
-          <Group key={restaurant.id} mb={10}>
+          <Group
+            key={restaurant.id}
+            mb={10}
+            onClick={() => handleRestaurantClick(restaurant.id)}
+          >
             <Image
               src={restaurant.thumbnail_upload_id || "/no_image.png"}
               width={80}
