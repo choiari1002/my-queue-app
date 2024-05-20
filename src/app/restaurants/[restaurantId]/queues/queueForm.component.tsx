@@ -13,11 +13,22 @@ import {
   Container,
   Group,
 } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 
 type QueueFormProps = {
   restaurantId: string;
 };
+const schema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().min(10, "Contact number is required"),
+  adults_count: z.number().min(1, "At least one adult is required").max(10),
+  children_count: z.number().min(0).max(10),
+  request: z.string().max(50, "Request cannot exceed 50 characters"),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
   restaurantId,
@@ -32,11 +43,6 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
     address_line_1: string;
     city: string;
   } | null>(null);
-  const [name, setName] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [adultsCount, setAdultsCount] = useState(0);
-  const [childrenCount, setChildrenCount] = useState(0);
-  const [request, setRequest] = useState("");
 
   useEffect(() => {
     const fetchRestaurantData = async () => {
@@ -70,8 +76,19 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
     fetchRestaurantData();
   }, [restaurantId, supabase]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const form = useForm({
+    initialValues: {
+      name: "",
+      phone: "",
+      adults_count: 0,
+      children_count: 0,
+      request: "",
+    },
+
+    validate: zodResolver(schema),
+  });
+
+  const handleSubmit = async (values: FormValues) => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -82,11 +99,11 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
     }
 
     const { error } = await supabase.from("queues").insert({
-      name: name,
-      phone: contactNumber,
-      adults_count: adultsCount,
-      children_count: childrenCount,
-      request: request,
+      name: values.name,
+      phone: values.phone,
+      adults_count: values.adults_count,
+      children_count: values.children_count,
+      request: values.request,
       status: "1",
       restaurant_id: restaurantId,
       created_by: user.id,
@@ -137,26 +154,16 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
 
       <Divider my={20} />
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Text fw={700} mb={5}>
           Please fill your name *
         </Text>
-        <TextInput
-          value={name}
-          onChange={(event) => setName(event.currentTarget.value)}
-          required
-          mb={20}
-        />
+        <TextInput {...form.getInputProps("name")} required mb={20} />
 
         <Text fw={700} mb={5}>
           Please fill your contact number *
         </Text>
-        <TextInput
-          value={contactNumber}
-          onChange={(event) => setContactNumber(event.currentTarget.value)}
-          required
-          mb={20}
-        />
+        <TextInput {...form.getInputProps("phone")} required mb={20} />
 
         <Text fw={700} mb={5}>
           Please select the number of visitors
@@ -165,19 +172,13 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
         <Text fw={700} size="sm">
           Adult
         </Text>
-        <NumberInput
-          value={adultsCount}
-          onChange={(value) => setAdultsCount(Number(value))}
-          min={0}
-          max={10}
-        />
+        <NumberInput {...form.getInputProps("adults_count")} min={1} max={10} />
 
         <Text fw={700} size="sm">
           Child (under the age of 5)
         </Text>
         <NumberInput
-          value={childrenCount}
-          onChange={(value) => setChildrenCount(Number(value))}
+          {...form.getInputProps("children_count")}
           min={0}
           max={10}
         />
@@ -186,10 +187,8 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
           Request
         </Text>
         <TextInput
-          value={request}
-          onChange={(event) => setRequest(event.currentTarget.value)}
+          {...form.getInputProps("request")}
           placeholder="You can write up to 50 characters maximum"
-          maxLength={50}
           mb={20}
         />
 
