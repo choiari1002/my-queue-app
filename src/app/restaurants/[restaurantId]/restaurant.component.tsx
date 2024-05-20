@@ -10,6 +10,7 @@ import {
   Divider,
   Box,
 } from "@mantine/core";
+import Link from "next/link";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 
 type RestaurantProps = {
@@ -139,7 +140,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
         {address.city}, {address.country}, {address.postal_code}
       </Text>
 
-      <Button variant="filled" fullWidth mt={50} color="#FE6232">
+      <Button variant="filled" fullWidth mt={50} color="#FE6232" component={Link} href={`${restaurantId}/queues`}>
         Join the Waitlist
       </Button>
     </Container>
