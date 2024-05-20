@@ -1,6 +1,19 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { PropsWithChildren, FC } from "react";
+import { redirect, useRouter } from "next/navigation";
+import {
+  Text,
+  Button,
+  Image,
+  TextInput,
+  NumberInput,
+  Divider,
+  Container,
+  Group,
+} from "@mantine/core";
+import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 
 type QueueFormProps = {
   restaurantId: string;
@@ -9,7 +22,183 @@ type QueueFormProps = {
 const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
   restaurantId,
 }) => {
-  return <>hello ariiii</>;
+  const router = useRouter();
+  const supabase = makeBrowserClient();
+  const [restaurant, setRestaurant] = useState<{
+    name: string;
+    thumbnail_upload_id: string | null;
+  } | null>(null);
+  const [address, setAddress] = useState<{
+    address_line_1: string;
+    city: string;
+  } | null>(null);
+  const [name, setName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [adultsCount, setAdultsCount] = useState(0);
+  const [childrenCount, setChildrenCount] = useState(0);
+  const [request, setRequest] = useState("");
+
+  useEffect(() => {
+    const fetchRestaurantData = async () => {
+      const { data: restaurantData, error: restaurantError } = await supabase
+        .from("restaurants")
+        .select("name, thumbnail_upload_id")
+        .eq("id", restaurantId)
+        .single();
+
+      if (restaurantError) {
+        console.error("Error fetching restaurant:", restaurantError.message);
+        return;
+      }
+
+      setRestaurant(restaurantData);
+
+      const { data: addressData, error: addressError } = await supabase
+        .from("addresses")
+        .select("address_line_1, city")
+        .eq("restaurant_id", restaurantId)
+        .single();
+
+      if (addressError) {
+        console.error("Error fetching address:", addressError.message);
+        return;
+      }
+
+      setAddress(addressData);
+    };
+
+    fetchRestaurantData();
+  }, [restaurantId, supabase]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const { error } = await supabase.from("queues").insert({
+      name: name,
+      phone: contactNumber,
+      adults_count: adultsCount,
+      children_count: childrenCount,
+      request: request,
+      status: "1",
+      restaurant_id: restaurantId,
+      created_by: user.id,
+    });
+
+    if (error) {
+      alert(JSON.stringify(error));
+    } else {
+      alert("Successfully added to the queue!");
+      router.push("/");
+    }
+  };
+
+  if (!restaurant || !address) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <Container>
+      <Group mb={20}>
+        <Button
+          variant="subtle"
+          onClick={() => router.push(`/restaurants/${restaurantId}`)}
+          color="gray"
+        >
+          {"<"}
+        </Button>
+        <Text fw={700} size="xl">
+          Join the Waitlist
+        </Text>
+      </Group>
+
+      <Group mb={20}>
+        <Image
+          src={restaurant.thumbnail_upload_id || "/no_image.png"}
+          width={80}
+          height={80}
+          radius="md"
+          alt={restaurant.name}
+        />
+        <div>
+          <Text fw={700}>{restaurant.name}</Text>
+          <Text size="sm">
+            {address.address_line_1}, {address.city}
+          </Text>
+        </div>
+      </Group>
+
+      <Divider my={20} />
+
+      <form onSubmit={handleSubmit}>
+        <Text fw={700} mb={5}>
+          Please fill your name *
+        </Text>
+        <TextInput
+          value={name}
+          onChange={(event) => setName(event.currentTarget.value)}
+          required
+          mb={20}
+        />
+
+        <Text fw={700} mb={5}>
+          Please fill your contact number *
+        </Text>
+        <TextInput
+          value={contactNumber}
+          onChange={(event) => setContactNumber(event.currentTarget.value)}
+          required
+          mb={20}
+        />
+
+        <Text fw={700} mb={5}>
+          Please select the number of visitors
+        </Text>
+
+        <Text fw={700} size="sm">
+          Adult
+        </Text>
+        <NumberInput
+          value={adultsCount}
+          onChange={(value) => setAdultsCount(Number(value))}
+          min={0}
+          max={10}
+        />
+
+        <Text fw={700} size="sm">
+          Child (under the age of 5)
+        </Text>
+        <NumberInput
+          value={childrenCount}
+          onChange={(value) => setChildrenCount(Number(value))}
+          min={0}
+          max={10}
+        />
+
+        <Text fw={700} mb={5}>
+          Request
+        </Text>
+        <TextInput
+          value={request}
+          onChange={(event) => setRequest(event.currentTarget.value)}
+          placeholder="You can write up to 50 characters maximum"
+          maxLength={50}
+          mb={20}
+        />
+
+        <Button type="submit" variant="filled" fullWidth color="#FE6232">
+          Apply
+        </Button>
+      </form>
+    </Container>
+  );
 };
 
 QueueFormComponent.displayName = "QueueForm";
