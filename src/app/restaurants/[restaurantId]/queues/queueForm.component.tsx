@@ -113,7 +113,8 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
       alert(JSON.stringify(error));
     } else {
       alert("Successfully added to the queue!");
-      router.push("/");
+      router.push(`queues/confirmation`);
+
     }
   };
 
