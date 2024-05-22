@@ -20,6 +20,7 @@ import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 type QueueFormProps = {
   restaurantId: string;
 };
+// phone number validation..
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(10, "Contact number is required"),
@@ -104,7 +105,6 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
       adults_count: values.adults_count,
       children_count: values.children_count,
       request: values.request,
-      status: "1",
       restaurant_id: restaurantId,
       created_by: user.id,
     });
