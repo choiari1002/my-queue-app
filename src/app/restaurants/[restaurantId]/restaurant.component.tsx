@@ -110,7 +110,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
         mb={20}
       />
 
-      <Text size="sm">
+      <Text size="sm" >
         {address.city}
       </Text>
       <Text fw={700} size="xl">

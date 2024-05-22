@@ -58,25 +58,19 @@ const MainComponent = () => {
         </Text>
 
         <SimpleGrid cols={3} spacing="xs" mt={20}>
-          {displayedRegions.map(
-            (
-              region
-            ) => (
-              <Button
-                key={region.id}
-                variant="default"
-                radius="xl"
-                fullWidth
-                onClick={() => handleRegionClick(region.id)}
-              >
-                {region.name}
-              </Button>
-            )
-          )}
+          {displayedRegions.map((region) => (
+            <Button
+              key={region.id}
+              variant="default"
+              radius="xl"
+              fullWidth
+              onClick={() => handleRegionClick(region.id)}
+            >
+              {region.name}
+            </Button>
+          ))}
         </SimpleGrid>
-      </Container>
-      <Divider size={7} mt={20} mb={20} />
-      <Container>
+        <Divider my={20} />
         <Text fw={700} size="md">
           Explore restaurants near me
         </Text>
