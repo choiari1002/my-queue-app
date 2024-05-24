@@ -131,6 +131,7 @@ const QueueConfirmationComponent = ({ restaurantId }: { restaurantId: string }) 
         variant="default"
         fullWidth
         mt={20}
+        color="#FE6232"
         onClick={() => router.push("/")}
       >
         Go to Home
