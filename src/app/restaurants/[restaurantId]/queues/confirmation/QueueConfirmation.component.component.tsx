@@ -8,6 +8,7 @@ import {
   Container,
   Group,
   Box,
+  Card
 } from "@mantine/core";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 
@@ -97,7 +98,7 @@ const QueueConfirmationComponent = ({ restaurantId }: { restaurantId: string }) 
     <Container>
       {/* Header with back button and title */}
       <Group mb={20}>
-        <Button variant="subtle" onClick={() => router.back()}>
+        <Button variant="subtle" color="gray" onClick={() => router.back()}>
           {"<"}
         </Button>
         <Text fw={700} size="xl">
@@ -107,12 +108,11 @@ const QueueConfirmationComponent = ({ restaurantId }: { restaurantId: string }) 
 
       {/* Queue position information */}
       <Text fw={700} size="xl">
-        Currently <Text span color="orange">{queuePosition}</Text> in queue
+        Currently <Text span color="orange" fw={700}>{queuePosition}</Text> in queue
       </Text>
 
       {/* Restaurant information box */}
-      <Box
-      >
+      <Card padding="lg" radius="md" mt={20} withBorder>
         <Group mb={5}>
           <Text fw={500}>Restaurant Name</Text>
           <Text>{restaurantName}</Text>
@@ -125,7 +125,7 @@ const QueueConfirmationComponent = ({ restaurantId }: { restaurantId: string }) 
           <Text fw={500}>Estimated Wait Time</Text>
           <Text>30 min</Text>
         </Group>
-      </Box>
+      </Card>
 
       <Button
         variant="default"
