@@ -88,7 +88,6 @@ export type Database = {
           phone: string
           request: string | null
           restaurant_id: string
-          status: string
         }
         Insert: {
           adults_count: number
@@ -100,7 +99,6 @@ export type Database = {
           phone: string
           request?: string | null
           restaurant_id: string
-          status: string
         }
         Update: {
           adults_count?: number
@@ -112,7 +110,6 @@ export type Database = {
           phone?: string
           request?: string | null
           restaurant_id?: string
-          status?: string
         }
         Relationships: [
           {

@@ -107,7 +107,15 @@ const RestaurantListComponent = () => {
         );
       }
 
-      setRestaurants(filteredRestaurants);
+      const filteredRestaurantsWithTypes = filteredRestaurants.map((restaurant) => ({
+        id: restaurant.id as string,
+        name: restaurant.name as string,
+        thumbnail_upload_id: restaurant.thumbnail_upload_id as string,
+        city: restaurant.city as string,
+        queue_count: restaurant.queue_count as number,
+      }));
+
+      setRestaurants(filteredRestaurantsWithTypes);
     };
 
     fetchRestaurants();
