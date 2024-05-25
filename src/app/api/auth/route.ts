@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
     } catch (e) {}
   }
 
-  return NextResponse.redirect("http://localhost:3000");
+  return NextResponse.redirect(req.nextUrl.origin);
   // 후..
   // return NextResponse.redirect("http://localhost:3000/auth/reset-password");
 }
