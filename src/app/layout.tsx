@@ -3,6 +3,7 @@ import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,10 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={inter.className}>
-        <MantineProvider>{children}</MantineProvider>
-        <footer>
-        </footer>
+        <MantineProvider>
+          <Suspense>{children}</Suspense>
+        </MantineProvider>
+        <footer></footer>
       </body>
     </html>
   );
