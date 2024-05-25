@@ -42,7 +42,7 @@ const UsernameComponent = () => {
       }
 
       console.log("Username inserted successfully:", userData);
-      router.push("/restaurants");
+      router.push("/");
     } else {
       console.error("No user found");
     }
