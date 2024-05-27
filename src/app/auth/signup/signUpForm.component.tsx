@@ -49,7 +49,10 @@ const SignUpFormComponent = () => {
         email,
         password,
         options: {
-          emailRedirectTo: "http://localhost:3000/api/auth",
+          data: {
+            originUrl: location.origin
+          },
+          emailRedirectTo: `${location.origin}/api/auth`,
         },
       });
 
