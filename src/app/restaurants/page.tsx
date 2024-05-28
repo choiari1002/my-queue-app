@@ -1,17 +1,19 @@
-"use client"
-
 import { makeServerClient } from "@/utils/supabaseServerClient.utils";
 import { redirect } from "next/navigation";
 import { RestaurantList } from "./restaurantList.component";
-import { useSearchParams } from "next/navigation"; // useSearchParams 추가
+import { useSearchParams } from "next/navigation";
 
-const RestaurantsPage = () => {
-  const searchParams = useSearchParams(); // 쿼리 파라미터 가져오기
+const RestaurantsPage = async () => {
+  const searchParams = useSearchParams();
+
+  const supabase = makeServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return redirect("/auth/signin");
+
   const city = searchParams.get("city");
   const regionId = searchParams.get("region");
-
-  console.log(city);
-  console.log(regionId);
 
   return (
     <RestaurantList/>
