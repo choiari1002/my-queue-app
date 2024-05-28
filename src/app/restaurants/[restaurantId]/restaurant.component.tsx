@@ -87,7 +87,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
   }, [restaurantId, supabase]);
 
   if (!restaurant || !address) {
-    return <div>Loading...</div>; // 로딩 중 표시
+    return <div>Loading...</div>;
   }
 
   return (
