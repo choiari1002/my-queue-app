@@ -33,7 +33,7 @@ const UsernameComponent = () => {
     if (user) {
       const { data: userData, error: userError } = await supabase
         .from("users")
-        .insert({ username: username, auth_user_id: user.id, role: 1 })
+        .insert({ username: username, auth_user_id: user.id, role_id: 1 })
         .single();
 
       if (userError) {
