@@ -190,26 +190,47 @@ export type Database = {
         }
         Relationships: []
       }
+      roles: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           auth_user_id: string | null
           created_at: string
           id: string
-          role: number
+          restaurant_id: string | null
+          role_id: number
           username: string
         }
         Insert: {
           auth_user_id?: string | null
           created_at?: string
           id?: string
-          role: number
+          restaurant_id?: string | null
+          role_id: number
           username: string
         }
         Update: {
           auth_user_id?: string | null
           created_at?: string
           id?: string
-          role?: number
+          restaurant_id?: string | null
+          role_id?: number
           username?: string
         }
         Relationships: [
@@ -218,6 +239,20 @@ export type Database = {
             columns: ["auth_user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
             referencedColumns: ["id"]
           },
         ]
