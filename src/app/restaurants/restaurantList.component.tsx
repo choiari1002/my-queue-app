@@ -16,7 +16,7 @@ const RestaurantListComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const city = searchParams.get("city") || "";
-  const initialRegionId = searchParams.get("region") || "All"; // 기본값 "All"
+  const initialRegionId = searchParams.get("region") || "All";
   const [regionId, setRegionId] = useState(initialRegionId);
   const [restaurants, setRestaurants] = useState<
     {

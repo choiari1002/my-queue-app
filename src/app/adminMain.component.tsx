@@ -1,6 +1,8 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import { Container, Text, Button, Group } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { Container, Text, Button, Group, Center } from "@mantine/core";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 
 const AdminMainComponent = () => {
@@ -10,6 +12,7 @@ const AdminMainComponent = () => {
     status: string;
   } | null>(null);
   const [restaurantId, setRestaurantId] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchRestaurantData = async () => {
@@ -72,6 +75,8 @@ const AdminMainComponent = () => {
     console.log(newStatus);
 
     // todo: it's not working now..
+    // rls.. / add admin client
+    //
     const { error } = await supabase
       .from("restaurants")
       .update({ status: newStatus })
@@ -85,19 +90,27 @@ const AdminMainComponent = () => {
     }
   };
 
+  const handleManageQueueClick = () => {
+    router.push("/manage-queue");
+  };
+
   return (
     <Container>
       <Text fw={700} size="xl">
         Hello, {restaurant.name}
       </Text>
 
-      <Group mt={20}>
-        <Button onClick={handleStatusToggle}>
+      <Center mt={20}>
+        <Button variant="default" radius="xl" onClick={handleStatusToggle}>
           {restaurant.status === "open" ? "Close Restaurant" : "Open Restaurant"}
         </Button>
-        <Button>Manage Restaurant</Button>
-        <Button>Add Staff</Button>
-      </Group>
+      </Center>
+      <Center mt={20}>
+        <Button variant="default" radius="xl">Manage Restaurant</Button>
+      </Center>
+      <Center mt={20}>
+        <Button variant="default" radius="xl" onClick={handleManageQueueClick}>Manage Queue</Button>
+      </Center>
     </Container>
   );
 };
