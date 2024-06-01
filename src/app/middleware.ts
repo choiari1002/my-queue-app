@@ -21,21 +21,18 @@ export async function middleware(request: NextRequest) {
     const { data: usernameData, error: usernameError } = await supabaseAdmin
       .from("users")
       .select("username")
-      .eq("id", user.id);
+      .eq("auth_user_id", user.id);
 
     if (usernameError) {
-      console.log(usernameError);
+      console.error("Error fetching username data:", usernameError.message);
       return;
     }
 
     if (!usernameData.length) {
-      if (requestPath.startsWith("/") || requestPath.startsWith("/")) {
-        return response;
-      }
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/auth/set-username", request.url));
     } else {
-      if (requestPath.startsWith("")) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+      if (requestPath.startsWith("/auth/set-username")) {
+        return NextResponse.redirect(new URL("/", request.url));
       }
     }
     return response;
