@@ -8,36 +8,38 @@ export async function middleware(request: NextRequest) {
 
   const { pathname: requestPath } = request.nextUrl;
 
+  if (requestPath.startsWith('/auth')) return response;
+
   const user = await supabase.auth.getUser().then(({ data }) => data.user);
   const sendToAuth = () =>
     NextResponse.redirect(new URL("/auth/signin", request.url));
 
   if (user) {
-    if (requestPath.startsWith("/auth")) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
     // check username
     const { data: usernameData, error: usernameError } = await supabaseAdmin
       .from("users")
       .select("username")
-      .eq("auth_user_id", user.id);
+      .eq("auth_user_id", user.id)
+      .single();
 
     if (usernameError) {
       console.error("Error fetching username data:", usernameError.message);
-      return;
+      return sendToAuth();
     }
 
-    if (!usernameData.length) {
-      return NextResponse.redirect(new URL("/auth/set-username", request.url));
-    } else {
-      if (requestPath.startsWith("/auth/set-username")) {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
+    if (!usernameData && !requestPath.startsWith("/set-username")) {
+        return NextResponse.redirect(new URL("/set-username", request.url));
     }
+
+    // if (!usernameData.length) {
+    //   return NextResponse.redirect(new URL("/auth/set-username", request.url));
+    // } else {
+    //   if (requestPath.startsWith("/auth/set-username")) {
+    //     return NextResponse.redirect(new URL("/", request.url));
+    //   }
+    // }
     return response;
   } else {
-    if (requestPath.startsWith("/auth")) return response;
     return sendToAuth();
   }
 }
@@ -51,6 +53,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:txt|xml|js|css|ico|svg|png|jpg|jpeg|gif|webp|json)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:txt|xml|js|css|ico|svg|png|jpg|jpeg|gif|webp|json)$).*)",
   ],
 };
