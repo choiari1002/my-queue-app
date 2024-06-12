@@ -190,26 +190,90 @@ export type Database = {
         }
         Relationships: []
       }
+      roles: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: number
+          is_manager: boolean | null
+          restaurant_id: string | null
+          role_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_manager?: boolean | null
+          restaurant_id?: string | null
+          role_id: number
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_manager?: boolean | null
+          restaurant_id?: string | null
+          role_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           auth_user_id: string | null
           created_at: string
           id: string
-          role: number
           username: string
         }
         Insert: {
           auth_user_id?: string | null
           created_at?: string
           id?: string
-          role: number
           username: string
         }
         Update: {
           auth_user_id?: string | null
           created_at?: string
           id?: string
-          role?: number
           username?: string
         }
         Relationships: [

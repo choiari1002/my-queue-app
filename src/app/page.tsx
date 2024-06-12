@@ -10,30 +10,45 @@ const HomePage = async () => {
   } = await supabase.auth.getUser();
 
   if (user) {
-    // 사용자가 로그인되어 있고, 등록된 사용자인 경우
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select()
-      .eq("auth_user_id", user.id);
+      .select("id")
+      .eq("auth_user_id", user.id)
+      .single();
 
     if (userError) {
       console.error("Error fetching user data:", userError.message);
       return;
     }
 
-    if (userData.length === 0) {
-      // 사용자 정보가 등록되지 않은 경우
+    if (!userData) {
       redirect("/auth/set-username");
-    }
+    } else {
+      const userId = userData.id;
 
+      const { data: userRoleData, error: userRoleError } = await supabase
+        .from("user_roles")
+        .select("user_id")
+        .eq("user_id", userId);
+
+      if (userRoleError) {
+        console.error("Error fetching user role:", userRoleError.message);
+        return;
+      }
+
+      console.log("000");
+      if (userRoleData.length >0) {
+        // If the user has a role, redirect to the admin page
+        redirect("/admin");
+      } else {
+        // If the user does not have a role, render the Main component
+        return <Main />;
+      }
+    }
   } else {
-    // 사용자가 로그인되어 있지 않은 경우
     redirect("/auth/signin");
   }
-
-  return (
-    <Main/>
-  );
 };
 
 export default HomePage;
+
