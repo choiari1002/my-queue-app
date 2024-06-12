@@ -3,10 +3,10 @@
 import { makeServerClient } from "@/utils/supabaseServerClient.utils";
 import { redirect } from "next/navigation";
 import { RestaurantList } from "./restaurantList.component";
-import { useSearchParams } from "next/navigation"; // useSearchParams 추가
+import { useSearchParams } from "next/navigation";
 
 const RestaurantsPage = () => {
-  const searchParams = useSearchParams(); // 쿼리 파라미터 가져오기
+  const searchParams = useSearchParams();
   const city = searchParams.get("city");
   const regionId = searchParams.get("region");
 

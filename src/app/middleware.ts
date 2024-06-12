@@ -1,76 +1,58 @@
-// import { NextResponse, type NextRequest } from "next/server";
-// import { updateSession } from "@/utils/supabase/middleware";
-// import { makeMiddlewareClient } from "@/utils/supabaseServerClient.utils";
+import { NextResponse, NextRequest } from "next/server";
+import { makeMiddlewareClient } from "@/utils/supabaseServerClient.utils";
+import { createAdmin } from "@/utils/supabase/admin";
 
-// export async function middleware(request: NextRequest) {
-//   const { response, supabase } = makeMiddlewareClient(request);
+export async function middleware(request: NextRequest) {
+  const supabaseAdmin = createAdmin();
+  const { response, supabase } = makeMiddlewareClient(request);
 
-//   const { pathname: requestPath, searchParams: URLSearchParams } =
-//     request.nextUrl;
+  const { pathname: requestPath } = request.nextUrl;
 
-//   // // Locale setting is not important for API
-//   // let locale = request.cookies.get("locale")?.value;
+  if (requestPath.startsWith('/auth')) return response;
 
-//   // if (!locale || !LOCALE_LIST.find((x) => x.code === locale)) {
-//   //   locale = DEFAULT_LOCALE.code;
-//   //   response.cookies.set("locale", locale, { maxAge: 30 * 24 * 3600, path: "/" });
-//   // }
+  const user = await supabase.auth.getUser().then(({ data }) => data.user);
+  const sendToAuth = () =>
+    NextResponse.redirect(new URL("/auth/signin", request.url));
 
-//   // proceed if heading to auth-related page
-//   if (requestPath.startsWith(`/${AUTH_PATH_PREFIX}`)) return response;
+  if (user) {
+    // check username
+    const { data: usernameData, error: usernameError } = await supabaseAdmin
+      .from("users")
+      .select("username")
+      .eq("auth_user_id", user.id)
+      .single();
 
-//   const user = await supabase.auth.getUser().then(({ data }) => data.user);
-//   const sendToAuth = () =>
-//     NextResponse.redirect(new URL(PATH.AUTH_CHOICE, request.url));
+    if (usernameError) {
+      console.error("Error fetching username data:", usernameError.message);
+      return sendToAuth();
+    }
 
-//   if (user) {
-//     // 나는 아직 getUserType 부분 없어..
-//     const { userType, storeId } = await getUserType(supabase, user);
+    if (!usernameData && !requestPath.startsWith("/set-username")) {
+        return NextResponse.redirect(new URL("/set-username", request.url));
+    }
 
-//     if (!storeId) {
-//       // user is authenticated, but does not have an administrating store
-//       await supabase.auth.signOut({ scope: "global" });
-//       return sendToAuth();
-//     }
+    // if (!usernameData.length) {
+    //   return NextResponse.redirect(new URL("/auth/set-username", request.url));
+    // } else {
+    //   if (requestPath.startsWith("/auth/set-username")) {
+    //     return NextResponse.redirect(new URL("/", request.url));
+    //   }
+    // }
+    return response;
+  } else {
+    return sendToAuth();
+  }
+}
 
-//     if (userType === "admin") {
-//       //authenticated user is an admin
-//       const pathPrefix = PATH.STORE_ADMIN_DASHBOARD(storeId);
-//       if (!requestPath.startsWith(pathPrefix)) {
-//         // current destination is not within admin portal
-//         return NextResponse.redirect(new URL(pathPrefix, request.url));
-//       }
-//     // } else if (userType === "device") {
-//     //   //authenticated user is a device
-//     //   const pathPrefix = PATH.STORE_DEVICE_DASHBOARD(storeId);
-//     //   if (!requestPath.startsWith(pathPrefix)) {
-//     //     // current destination is not within device portal
-//     //     return NextResponse.redirect(new URL(pathPrefix, request.url));
-//     //   }
-//     // }
-//     else {
-//       // userType is not recognized
-//       return sendToAuth();
-//     }
-//   } else {
-//     //redirect to auth page when an anonymous request is not designated to an auth-related page
-//     return sendToAuth();
-//   }
-//   return response;
-// }
-
-// // export async function middleware(request: NextRequest) {
-// //   return await updateSession(request)
-// // }
-// export const config = {
-//   matcher: [
-//     /*
-//      * Match all request paths except for the ones starting with:
-//      * - _next/static (static files)
-//      * - _next/image (image optimization files)
-//      * - favicon.ico (favicon file)
-//      * Feel free to modify this pattern to include more paths.
-//      */
-//     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:txt|xml|js|css|ico|svg|png|jpg|jpeg|gif|webp|json)$).*)",
-//   ],
-// };
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:txt|xml|js|css|ico|svg|png|jpg|jpeg|gif|webp|json)$).*)",
+  ],
+};
