@@ -44,7 +44,6 @@ const MainComponent = () => {
     router.push(`/restaurants?city=${city}&region=${regionId}`);
   };
 
-  // regions 배열에서 처음 7개만 선택 (일단은..)
   const displayedRegions = regions.slice(0, 9);
 
   return (

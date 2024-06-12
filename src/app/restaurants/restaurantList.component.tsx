@@ -16,7 +16,7 @@ const RestaurantListComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const city = searchParams.get("city") || "";
-  const initialRegionId = searchParams.get("region") || "All"; // 기본값 "All"
+  const initialRegionId = searchParams.get("region") || "All";
   const [regionId, setRegionId] = useState(initialRegionId);
   const [restaurants, setRestaurants] = useState<
     {
@@ -53,7 +53,6 @@ const RestaurantListComponent = () => {
         return;
       }
 
-      // 2. cityId로 regions 데이터 가져오기
       const { data: regionsData, error: regionsError } = await supabase
         .from("regions")
         .select("id, name")
@@ -83,7 +82,6 @@ const RestaurantListComponent = () => {
       let filteredRestaurants = data;
 
       if (regionId !== "All") {
-        // 선택된 regionId로 regions 테이블에서 region 이름 가져오기
         const { data: regionData, error: regionError } = await supabase
           .from("regions")
           .select("name")
