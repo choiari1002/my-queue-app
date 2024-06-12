@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect, PropsWithChildren, FC } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -11,6 +12,7 @@ import {
   Box,
 } from "@mantine/core";
 import Link from "next/link";
+import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 
 type RestaurantProps = {
@@ -37,6 +39,8 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
     address_line_2: string | null;
     postal_code: string;
     country: string;
+    latitude: string;
+    longitude: string;
   } | null>(null);
   const [queueCount, setQueueCount] = useState<number>(0);
 
@@ -59,7 +63,9 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
 
       const { data: addressData, error: addressError } = await supabase
         .from("addresses")
-        .select("city, address_line_1, address_line_2, postal_code, country")
+        .select(
+          "city, address_line_1, address_line_2, postal_code, country, latitude, longitude"
+        )
         .eq("restaurant_id", restaurantId)
         .single();
 
@@ -87,13 +93,17 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
   }, [restaurantId, supabase]);
 
   if (!restaurant || !address) {
-    return <div>Loading...</div>; // 로딩 중 표시
+    return <div>Loading...</div>;
   }
 
   return (
     <Container>
       <Group mb={20}>
-        <Button variant="subtle" onClick={() => router.push(`/restaurants?city=Vancouver&region=All`)} color="gray">
+        <Button
+          variant="subtle"
+          onClick={() => router.push(`/restaurants?city=Vancouver&region=All`)}
+          color="gray"
+        >
           {"<"}
         </Button>
         <Text fw={700} size="xl">
@@ -110,9 +120,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
         mb={20}
       />
 
-      <Text size="sm" >
-        {address.city}
-      </Text>
+      <Text size="sm">{address.city}</Text>
       <Text fw={700} size="xl">
         {restaurant.name}
       </Text>
@@ -134,13 +142,40 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
       <Text fw={700} mt={20}>
         Location
       </Text>
-      <Text size="sm">
+      <Text size="sm" mb={10}>
         {address.address_line_1} {address.address_line_2}
         <br />
         {address.city}, {address.country}, {address.postal_code}
       </Text>
+      <LoadScript
+        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+        language="en"
+      >
+        <GoogleMap
+          mapContainerStyle={{ width: "100%", height: "200px" }}
+          center={{
+            lat: address.latitude ? Number(address.latitude) : 0,
+            lng: address.longitude ? Number(address.longitude) : 0,
+          }}
+          zoom={15}
+        >
+          <MarkerF
+            position={{
+              lat: Number(address.latitude),
+              lng: Number(address.longitude),
+            }}
+          />
+        </GoogleMap>
+      </LoadScript>
 
-      <Button variant="filled" fullWidth mt={50} color="#FE6232" component={Link} href={`${restaurantId}/queues`}>
+      <Button
+        variant="filled"
+        fullWidth
+        mt={50}
+        color="#FE6232"
+        component={Link}
+        href={`${restaurantId}/queues`}
+      >
         Join the Waitlist
       </Button>
     </Container>
