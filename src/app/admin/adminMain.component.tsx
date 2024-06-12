@@ -84,7 +84,7 @@ const AdminMainComponent = () => {
   }, [supabase]);
 
   const handleRestaurantClick = (restaurantId: string) => {
-    router.push(`/manage-queue?restaurantId=${restaurantId}`);
+    router.push(`/restaurants/${restaurantId}`);
   };
 
   return (
