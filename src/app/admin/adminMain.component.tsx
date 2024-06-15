@@ -84,7 +84,7 @@ const AdminMainComponent = () => {
   }, [supabase]);
 
   const handleRestaurantClick = (restaurantId: string) => {
-    router.push(`/restaurants/${restaurantId}`);
+    router.push(`/admin/${restaurantId}`);
   };
 
   return (
