@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { format } from "date-fns";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
+import { fetchQueues } from "@/app/api/fetchQueues";
 
 type RestaurantProps = {
   restaurantId: string;
@@ -36,6 +37,8 @@ const QueueListComponent: FC<PropsWithChildren<RestaurantProps>> = ({
   useEffect(() => {
     if (!restaurantId) return;
 
+    console.log("hello ari");
+
     const fetchQueues = async () => {
       const { data, error } = await supabase
         .from("queues")
@@ -53,6 +56,20 @@ const QueueListComponent: FC<PropsWithChildren<RestaurantProps>> = ({
 
     fetchQueues();
   }, [restaurantId, supabase]);
+
+  // todo
+  //   useEffect(() => {
+  //     if (!restaurantId) return;
+  //     const fetchQueuesData = async () => {
+  //       try {
+  //         const data = await fetchQueues({ restaurantId });
+  //         setQueues(data);
+  //       } catch (error) {
+  //         console.error("Error fetching queues:", error.message);
+  //       }
+  //     };
+  //     fetchQueuesData();
+  //   }, [restaurantId]);
 
   const handleCallCustomer = (queueId: string) => {
     console.log("Call customer:", queueId);
