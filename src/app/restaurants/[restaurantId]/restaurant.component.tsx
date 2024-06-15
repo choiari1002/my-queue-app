@@ -147,26 +147,21 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
         <br />
         {address.city}, {address.country}, {address.postal_code}
       </Text>
-      <LoadScript
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-        language="en"
+      <GoogleMap
+        mapContainerStyle={{ width: "100%", height: "200px" }}
+        center={{
+          lat: address.latitude ? Number(address.latitude) : 0,
+          lng: address.longitude ? Number(address.longitude) : 0,
+        }}
+        zoom={15}
       >
-        <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "200px" }}
-          center={{
-            lat: address.latitude ? Number(address.latitude) : 0,
-            lng: address.longitude ? Number(address.longitude) : 0,
+        <MarkerF
+          position={{
+            lat: Number(address.latitude),
+            lng: Number(address.longitude),
           }}
-          zoom={15}
-        >
-          <MarkerF
-            position={{
-              lat: Number(address.latitude),
-              lng: Number(address.longitude),
-            }}
-          />
-        </GoogleMap>
-      </LoadScript>
+        />
+      </GoogleMap>
 
       <Button
         variant="filled"
