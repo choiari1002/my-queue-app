@@ -19,7 +19,7 @@ export const fetchQueues = async (restaurantId) => {
     error,
   } = await supabase
     .from("queues")
-    .select("id, name, created_at, adults_count, children_count")
+    .select("id, name, phone, created_at, adults_count, children_count")
     .eq("restaurant_id", restaurantId)
     .order("created_at", { ascending: true });
   if (error) {
