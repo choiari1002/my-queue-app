@@ -20,6 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <ColorSchemeScript />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#FE6232"></meta>
       </head>
       <body className={inter.className}>
         <MantineProvider>
