@@ -13,6 +13,7 @@ import {
 import { format } from "date-fns";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 import { fetchQueues } from "@/app/api/fetchQueues";
+// import { sendMessage } from "@/app/api/sendMessage";
 
 type RestaurantProps = {
   restaurantId: string;
@@ -28,6 +29,7 @@ const QueueListComponent: FC<PropsWithChildren<RestaurantProps>> = ({
     {
       id: string;
       name: string;
+      phone: string;
       created_at: string;
       adults_count: number;
       children_count: number;
@@ -36,43 +38,36 @@ const QueueListComponent: FC<PropsWithChildren<RestaurantProps>> = ({
 
   useEffect(() => {
     if (!restaurantId) return;
-
-    console.log("hello ari");
-
-    const fetchQueues = async () => {
-      const { data, error } = await supabase
-        .from("queues")
-        .select("id, name, created_at, adults_count, children_count")
-        .eq("restaurant_id", restaurantId)
-        .order("created_at", { ascending: true });
-
-      if (error) {
+    const fetchQueuesData = async () => {
+      try {
+        const data = await fetch("/api/fetchQueues", {
+          method: "POST",
+          body: JSON.stringify({ restaurantId }),
+        }).then((res) => res.json());
+        setQueues(data);
+      } catch (error) {
         console.error("Error fetching queues:", error.message);
-        return;
       }
-
-      setQueues(data);
     };
+    fetchQueuesData();
+  }, [restaurantId]);
 
-    fetchQueues();
-  }, [restaurantId, supabase]);
-
-  // todo
-  //   useEffect(() => {
-  //     if (!restaurantId) return;
-  //     const fetchQueuesData = async () => {
-  //       try {
-  //         const data = await fetchQueues({ restaurantId });
-  //         setQueues(data);
-  //       } catch (error) {
-  //         console.error("Error fetching queues:", error.message);
-  //       }
-  //     };
-  //     fetchQueuesData();
-  //   }, [restaurantId]);
-
-  const handleCallCustomer = (queueId: string) => {
-    console.log("Call customer:", queueId);
+  const handleCallCustomer = async (phone: string) => {
+    console.log("Call customer:", phone);
+    // sendMessage();
+    // test start
+    const message = "test";
+    const response = await fetch("/api/sendMessage", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            phone,
+            message
+        })
+    });
+    // test end
   };
 
   const handleSeatCustomer = async (queueId: string) => {
@@ -121,7 +116,7 @@ const QueueListComponent: FC<PropsWithChildren<RestaurantProps>> = ({
               <Button
                 variant="default"
                 radius="xl"
-                onClick={() => handleCallCustomer(queue.id)}
+                onClick={() => handleCallCustomer(queue.phone)}
               >
                 Call Customer
               </Button>
