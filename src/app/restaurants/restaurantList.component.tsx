@@ -15,7 +15,7 @@ import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 const RestaurantListComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const city = searchParams.get("city") || "";
+  const city = searchParams.get("city") || "Vancouver";
   const initialRegionId = searchParams.get("region") || "All";
   const [regionId, setRegionId] = useState(initialRegionId);
   const [restaurants, setRestaurants] = useState<
@@ -34,7 +34,6 @@ const RestaurantListComponent = () => {
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      // 1. 도시 이름으로 cityId 가져오기
       const { data: cityData, error: cityError } = await supabase
         .from("cities")
         .select("id")

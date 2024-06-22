@@ -167,6 +167,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
         variant="filled"
         fullWidth
         mt={50}
+        mb={20}
         color="#FE6232"
         component={Link}
         href={`${restaurantId}/queues`}

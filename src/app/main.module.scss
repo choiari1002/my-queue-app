@@ -15,6 +15,12 @@
         height: 4rem;
         border-top: 1px solid #dbdbdb;
       }
+
+      a,
+      a:visited {
+        text-decoration: none;
+        color: inherit;
+      }
     }
   }
 }
