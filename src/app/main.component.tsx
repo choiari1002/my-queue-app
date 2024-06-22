@@ -8,10 +8,13 @@ import {
   Divider,
   Center,
   Container,
+  Image
 } from "@mantine/core";
+import { Carousel } from "@mantine/carousel";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
 import NavComponent from "@/app/shared/nav/navComponent";
 import styles from "@/app/main.module.scss";
+import '@mantine/carousel/styles.css';
 
 const MainComponent = () => {
   const supabase = makeBrowserClient();
@@ -19,6 +22,18 @@ const MainComponent = () => {
   const [city, setCity] = useState<string>("Vancouver");
   const [regions, setRegions] = useState<{ id: string; name: string }[]>([]);
   const router = useRouter();
+
+  const images = [
+    'https://i.imgur.com/ZuAtJwf.png',
+    'https://i.imgur.com/SsaERRK.png',
+    'https://i.imgur.com/6Y4hdMr.png',
+  ];
+
+  const slides = images.map((url) => (
+    <Carousel.Slide key={url}>
+      <Image src={url} alt="header"/>
+    </Carousel.Slide>
+  ));
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -51,6 +66,7 @@ const MainComponent = () => {
   return (
     <div className={styles.container}>
       <Container>
+        <Carousel withIndicators mt={20} mb={20}>{slides}</Carousel>
         <Text fw={700} size="md">
           Join waitlist for the best restaurants in
         </Text>
