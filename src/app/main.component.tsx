@@ -10,6 +10,8 @@ import {
   Container,
 } from "@mantine/core";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
+import NavComponent from "@/app/shared/nav/navComponent";
+import styles from "@/app/main.module.scss";
 
 const MainComponent = () => {
   const supabase = makeBrowserClient();
@@ -47,7 +49,7 @@ const MainComponent = () => {
   const displayedRegions = regions.slice(0, 9);
 
   return (
-    <div>
+    <div className={styles.container}>
       <Container>
         <Text fw={700} size="md">
           Join waitlist for the best restaurants in
@@ -74,11 +76,14 @@ const MainComponent = () => {
           Explore restaurants near me
         </Text>
 
-        <Center mt={20}>
+        <Center mt={20} mb={20}>
           <Button variant="default" radius="xl">
             Allow Location to Find Nearby Restaurants
           </Button>
         </Center>
+        <div className="footer">
+          <NavComponent />
+        </div>
       </Container>
     </div>
   );

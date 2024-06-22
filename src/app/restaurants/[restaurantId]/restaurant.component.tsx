@@ -101,7 +101,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
       <Group mb={20}>
         <Button
           variant="subtle"
-          onClick={() => router.push(`/restaurants?city=Vancouver&region=All`)}
+          onClick={() => router.back()}
           color="gray"
         >
           {"<"}
