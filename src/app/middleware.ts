@@ -7,6 +7,7 @@ export async function middleware(request: NextRequest) {
   const { response, supabase } = makeMiddlewareClient(request);
 
   const { pathname: requestPath } = request.nextUrl;
+  console.log(requestPath);
 
   if (requestPath.startsWith('/auth')) return response;
 

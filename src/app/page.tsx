@@ -3,6 +3,7 @@ import { makeServerClient } from "@/utils/supabaseServerClient.utils";
 import { Main } from "./main.component";
 
 const HomePage = async () => {
+  console.log("are you here?");
   const supabase = makeServerClient();
 
   const {
@@ -20,7 +21,7 @@ const HomePage = async () => {
       console.error("Error fetching user data:", userError.message);
       return;
     }
-
+    console.log(userData);
     if (!userData) {
       redirect("/auth/set-username");
     } else {
@@ -46,6 +47,7 @@ const HomePage = async () => {
       }
     }
   } else {
+    console.log("no way..");
     redirect("/auth/signin");
   }
 };
