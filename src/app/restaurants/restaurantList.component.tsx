@@ -104,13 +104,15 @@ const RestaurantListComponent = () => {
         );
       }
 
-      const filteredRestaurantsWithTypes = filteredRestaurants.map((restaurant) => ({
-        id: restaurant.id as string,
-        name: restaurant.name as string,
-        thumbnail_upload_id: restaurant.thumbnail_upload_id as string,
-        city: restaurant.city as string,
-        queue_count: restaurant.queue_count as number,
-      }));
+      const filteredRestaurantsWithTypes = filteredRestaurants.map(
+        (restaurant) => ({
+          id: restaurant.id as string,
+          name: restaurant.name as string,
+          thumbnail_upload_id: restaurant.thumbnail_upload_id as string,
+          city: restaurant.city as string,
+          queue_count: restaurant.queue_count as number,
+        })
+      );
 
       setRestaurants(filteredRestaurantsWithTypes);
     };
@@ -128,9 +130,8 @@ const RestaurantListComponent = () => {
     router.push(`/restaurants/${restaurantId}`);
   };
 
-
   return (
-    <Container>
+    <Container mt={20}>
       <Group mb={20}>
         <Button variant="subtle" color="gray" onClick={() => router.push("/")}>
           {"<"}
@@ -147,7 +148,7 @@ const RestaurantListComponent = () => {
         allowDeselect={false}
       />
 
-<SimpleGrid cols={1} mt={20}>
+      <SimpleGrid cols={1} mt={20}>
         {restaurants.map((restaurant) => (
           <Group
             key={restaurant.id}

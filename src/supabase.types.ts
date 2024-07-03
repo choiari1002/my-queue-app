@@ -17,8 +17,9 @@ export type Database = {
           country: string
           created_at: string
           id: string
-          latitude: string
-          longitude: string
+          latitude: number
+          location: unknown | null
+          longitude: number
           postal_code: string
           province: string
           restaurant_id: string
@@ -30,8 +31,9 @@ export type Database = {
           country: string
           created_at?: string
           id?: string
-          latitude: string
-          longitude: string
+          latitude: number
+          location?: unknown | null
+          longitude: number
           postal_code: string
           province: string
           restaurant_id?: string
@@ -43,8 +45,9 @@ export type Database = {
           country?: string
           created_at?: string
           id?: string
-          latitude?: string
-          longitude?: string
+          latitude?: number
+          location?: unknown | null
+          longitude?: number
           postal_code?: string
           province?: string
           restaurant_id?: string
@@ -291,6 +294,147 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_restaurants_near_by:
+        | {
+            Args: {
+              latt: number
+              long: number
+            }
+            Returns: {
+              id: string
+              name: string
+              status: string
+              latitude: number
+              longitude: number
+              address_line_1: string
+              address_line_2: string
+              city: string
+              province: string
+              country: string
+              postal_code: string
+              dist_meters: number
+            }[]
+          }
+        | {
+            Args: {
+              latt: string
+              long: string
+            }
+            Returns: {
+              id: string
+              name: string
+              status: string
+              latitude: string
+              longitude: string
+              address_line_1: string
+              address_line_2: string
+              city: string
+              province: string
+              country: string
+              postal_code: string
+              dist_meters: number
+            }[]
+          }
+      get_restaurants_near_by_test: {
+        Args: {
+          latt: number
+          long: number
+        }
+        Returns: {
+          id: string
+          name: string
+          status: string
+          latitude: number
+          longitude: number
+          address_line_1: string
+          address_line_2: string
+          city: string
+          province: string
+          country: string
+          postal_code: string
+          dist_meters: number
+        }[]
+      }
+      get_restaurants_near_by_test10: {
+        Args: {
+          latt: number
+          long: number
+        }
+        Returns: {
+          id: string
+          name: string
+          status: string
+          latitude: number
+          longitude: number
+          address_line_1: string
+          address_line_2: string
+          city: string
+          province: string
+          country: string
+          postal_code: string
+          dist_meters: number
+        }[]
+      }
+      get_restaurants_near_by_test2: {
+        Args: {
+          latt: number
+          long: number
+        }
+        Returns: {
+          id: string
+          name: string
+          status: string
+          latitude: number
+          longitude: number
+          address_line_1: string
+          address_line_2: string
+          city: string
+          province: string
+          country: string
+          postal_code: string
+          dist_meters: number
+        }[]
+      }
+      get_restaurants_near_by_test3: {
+        Args: {
+          latt: number
+          long: number
+        }
+        Returns: {
+          id: string
+          name: string
+          status: string
+          latitude: number
+          longitude: number
+          address_line_1: string
+          address_line_2: string
+          city: string
+          province: string
+          country: string
+          postal_code: string
+          dist_meters: number
+        }[]
+      }
+      get_restaurants_near_by_test4: {
+        Args: {
+          latt: number
+          long: number
+        }
+        Returns: {
+          id: string
+          name: string
+          status: string
+          latitude: number
+          longitude: number
+          address_line_1: string
+          address_line_2: string
+          city: string
+          province: string
+          country: string
+          postal_code: string
+          dist_meters: number
+        }[]
+      }
       restaurant_queue_count: {
         Args: Record<PropertyKey, never>
         Returns: Record<string, unknown>[]

@@ -39,8 +39,8 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
     address_line_2: string | null;
     postal_code: string;
     country: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
   } | null>(null);
   const [queueCount, setQueueCount] = useState<number>(0);
 
@@ -97,7 +97,7 @@ const ResturantComponent: FC<PropsWithChildren<RestaurantProps>> = ({
   }
 
   return (
-    <Container>
+    <Container mt={20}>
       <Group mb={20}>
         <Button
           variant="subtle"
