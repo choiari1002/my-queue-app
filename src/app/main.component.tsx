@@ -148,7 +148,7 @@ const MainComponent = () => {
           </Center>
         ) : isLoading ? (
           <Center>
-            <Loader />
+            <Loader mt={50} color="gray"/>
           </Center>
         ) : restaurantList.length > 0 ? (
           <Box>
