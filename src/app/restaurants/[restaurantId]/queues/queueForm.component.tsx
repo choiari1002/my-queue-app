@@ -124,7 +124,7 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
 
   return (
     <Container>
-      <Group mb={20}>
+      <Group mt={20} mb={20}>
         <Button
           variant="subtle"
           onClick={() => router.push(`/restaurants/${restaurantId}`)}

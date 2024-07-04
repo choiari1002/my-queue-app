@@ -97,7 +97,7 @@ const QueueConfirmationComponent = ({ restaurantId }: { restaurantId: string }) 
   return (
     <Container>
       {/* Header with back button and title */}
-      <Group mb={20}>
+      <Group mt={20} mb={20}>
         <Button variant="subtle" color="gray" onClick={() => router.back()}>
           {"<"}
         </Button>
