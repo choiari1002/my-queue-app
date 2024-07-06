@@ -11,6 +11,7 @@ import {
   SimpleGrid,
 } from "@mantine/core";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
+import styles from "@/app/restaurants/restaurants.module.scss";
 
 const RestaurantListComponent = () => {
   const router = useRouter();
@@ -131,7 +132,7 @@ const RestaurantListComponent = () => {
   };
 
   return (
-    <Container mt={20}>
+    <Container mt={20} className={styles.container}>
       <Group mb={20}>
         <Button variant="subtle" color="gray" onClick={() => router.push("/")}>
           {"<"}

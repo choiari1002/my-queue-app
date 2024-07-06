@@ -16,11 +16,12 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import { makeBrowserClient } from "@/utils/supabaseBrowserClient.utils";
+import styles from "@/app/restaurants/restaurants.module.scss";
 
 type QueueFormProps = {
   restaurantId: string;
 };
-// phone number validation..
+
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(10, "Contact number is required"),
@@ -114,7 +115,6 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
     } else {
       alert("Successfully added to the queue!");
       router.push(`queues/confirmation`);
-
     }
   };
 
@@ -123,7 +123,7 @@ const QueueFormComponent: FC<PropsWithChildren<QueueFormProps>> = ({
   }
 
   return (
-    <Container>
+    <Container className={styles.container}>
       <Group mt={20} mb={20}>
         <Button
           variant="subtle"
